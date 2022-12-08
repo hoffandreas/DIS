@@ -12,88 +12,85 @@
     <h1 id="overskrift2">
         Velkommen til The Hoffs Wineinvestors auksjon
     </h1>
-</head>
-<body>
+    <style>
+      #overskrift2 {
+          text-align: center;
+      };
+  
+ 
+  #brukerNavnet {
+    text-emphasis: rgb(49, 13, 13);
+  }
 
-<hr>
-<table>
-  <tr>
-    <th>Auksjonen slutter om</th>
-    <th id="countDown"></th>
-  </tr>
-</table>
-<hr>
-  <h1 id="brukerNavnet">
-    Logget inn som:
-    <label type="text" id="brukerNavnet"></label>
-  </h1>
-
-    <div>
-      <img src="WINE1.JPEG" alt="WINE1" class="center" style="height: 350px; width: 250px; display: block; margin-left: auto; margin-right: auto;">
-  </div>
-
-    <table>
-        <tr>
-          <th>Brukernavn</th>
-          <th>Pengebud</th>
-        </tr>
-        <tr>
-          <td>John</td>
-          <td>100kr</td>
-        </tr>
-        <tr>
-          <td>Anders</td>
-          <td>200kr</td>
-        </tr>
-      </table>
-
-</body>
-
-<style>
-    #overskrift2 {
+input {
+     text-align: center;
+      };
+      ::-webkit-input-placeholder {
         text-align: center;
-      
-    };
+      };
+      :-moz-placeholder {
+        text-align: center;
+      };
 
     #brukerNavnet {
 font-size: 20px;
     };
+  
+  </style>
+</head>
+<body>
 
-/* Three image containers (use 25% for four, and 50% for two, etc) */
+<hr>
 
-#countDown {
-  text-align: center;
-}
+<table>
+  <tr>
+    <th>Auksjonen slutter om</th>
+    <th id="nedtelling"></th>
+  </tr>
+</table>
+<hr>
+  <p style="font-size: 200%;">
+    Du er logget inn som 
+    <div id="brukerNavnet"></div>
 
-</style>
+    <form action="javascript:void(0)" id="" >
+      <div>
+        <img src="WINE1.JPEG" alt="WINE1" class="center" style="height: 350px; width: 250px; display: block; margin-left: auto; margin-right: auto" >
+    </div>
+    <input placeholder="Pengebud" type="number" name="message" id="message" style="display: block; margin-left: auto; margin-right: auto;">
+    <input type="submit" value="Legg inn bud" style="display: block; margin-left: auto; margin-right: auto;"></tr>
+  </form>
+    
+    
+</body>
 
 <script>
   // Set the date we're counting down to
-  var countDownDate = new Date("Jan 20, 2023 23:59:59").getTime();
+  const countDownDate = new Date("Jan 20, 2023 23:59:59").getTime();
   
   // Update the count down every 1 second
-  var x = setInterval(function() {
+  const x = setInterval(() => {
   
     // Get today's date and time
-    var now = new Date().getTime();
+    const now = new Date().getTime();
       
     // Find the distance between now and the count down date
-    var distance = countDownDate - now;
+    var distanse = countDownDate - now;
       
     // Time calculations for days, hours, minutes and seconds
-    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    let dager = Math.floor(distanse / (1000 * 60 * 60 * 24));
+    let timer = Math.floor((distanse % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let minutter = Math.floor((distanse % (1000 * 60 * 60)) / (1000 * 60));
+    let sekunder = Math.floor((distanse % (1000 * 60)) / 1000);
       
     // Output the result in an element with id="demo"
-    document.getElementById("countDown").innerHTML = days + "d " + hours + "h "
-    + minutes + "m " + seconds + "s ";
+    document.getElementById("nedtelling").innerHTML = dager + "d " + timer + "h "
+    + minutter + "m " + sekunder + "s ";
       
     // If the count down is over, write some text 
-    if (distance < 0) {
+    if (distanse < 0) {
       clearInterval(x);
-      document.getElementById("countDown").innerHTML = "EXPIRED";
+      document.getElementById("nedtelling").innerHTML = "AUKSJON ER OVER";
     }
   }, 1000);
   </script>

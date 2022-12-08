@@ -22,16 +22,15 @@ app.use(express.static(__dirname + '/public'))
 
 const db = new sqlite3.Database('./User.sqlite3');
 
-db.serialize(function() {
-  //console.log('creating databases if they do not exist');
-  db.run('create table if not exists users (userId integer primary key, username text not null, password text not null)');
+db.serialize(() => {
+  db.run('CREATE TABLE IF NOT EXISTS brukere (brukerId INTEGER PRIMARY KEY, username TEXT NOT NULL, password NOT NULL)');
 });
 
 
 // Tilføjer user til db
 const addUserToDatabase = (username, password) => {
   db.run(
-    'insert into users (username, password) values (?, ?)', 
+    'INSERT INTO brukere (username, password) VALUES (?, ?)', 
     [username, password], 
     function(err) {
       if (err) {
@@ -45,7 +44,7 @@ const getUserByUsername = (userName) => {
   // Smart måde at konvertere fra callback til promise:
   return new Promise((resolve, reject) => {  
     db.all(
-      'select * from users where userName=(?)',
+      'SELECT * FROM brukere WHERE userName=(?)',
       [userName], 
       (err, rows) => {
         if (err) {

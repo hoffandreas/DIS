@@ -23,15 +23,15 @@ app.use(express.static(__dirname + '/public'))
 const db = new sqlite3.Database('./User.sqlite3');
 
 db.serialize(() => {
-  db.run('CREATE TABLE IF NOT EXISTS brukere (brukerId INTEGER PRIMARY KEY, username TEXT NOT NULL, password NOT NULL)');
+  db.run('CREATE TABLE IF NOT EXISTS brukere (brukerId INTEGER PRIMARY KEY, brukernavn TEXT NOT NULL, password NOT NULL)');
 });
 
 
 // Tilføjer user til db
-const addUserToDatabase = (username, password) => {
+const addUserToDatabase = (brukernavn, password) => {
   db.run(
-    'INSERT INTO brukere (username, password) VALUES (?, ?)', 
-    [username, password], 
+    'INSERT INTO brukere (brukernavn, password) VALUES (?, ?)', 
+    [brukernavn, password], 
     function(err) {
       if (err) {
         console.error(err);
@@ -40,12 +40,12 @@ const addUserToDatabase = (username, password) => {
   );
 }
 
-const getUserByUsername = (userName) => {
+const getUserByUsername = (brukernavn) => {
   // Smart måde at konvertere fra callback til promise:
   return new Promise((resolve, reject) => {  
     db.all(
-      'SELECT * FROM brukere WHERE userName=(?)',
-      [userName], 
+      'SELECT * FROM brukere WHERE brukernavn=(?)',
+      [brukernavn], 
       (err, rows) => {
         if (err) {
           console.error(err);
@@ -81,6 +81,7 @@ app.get("/", (req, res) => {
         return res.redirect("main.html");
     } else {
         return res.sendFile("/signup.html", { root: path.join(__dirname, "public") });
+        
     }
 });
 
@@ -107,7 +108,7 @@ app.post("/login", bodyParser.urlencoded(), async (req, res) => {
   // Programmer så at brugeren kan logge ind med sit brugernavn og password
 
   // Henter vi brugeren ud fra databasen
-  const user = await getUserByUsername(req.body.username);
+  const user = await getUserByUsername(req.body.brukernavn);
 
   if(user.length === 0) {
     console.log('no user found');
@@ -119,7 +120,7 @@ app.post("/login", bodyParser.urlencoded(), async (req, res) => {
   // Hint: Her skal vi tjekke om brugeren findes i databasen og om passwordet er korrekt
   if (user[0].password === hashPassword(req.body.password)) {
       req.session.loggedIn = true;
-      req.session.username = req.body.username;
+      req.session.brukernavn = req.body.brukernavn;
       console.log(req.session);
       res.redirect("main.html");
   } else {
@@ -144,14 +145,14 @@ app.get("/", (req, res) => { /////////////////
 });
 
 app.post("/signup", bodyParser.urlencoded(), async (req, res) => {
-  const user = await getUserByUsername(req.body.username)
+  const user = await getUserByUsername(req.body.brukernavn)
   if (user.length > 0) {
     return res.send('Username already exists');
   }
 
   // Opgave 2
   // Brug funktionen hashPassword til at kryptere passwords (husk både at hash ved signup og login!)
-  addUserToDatabase(req.body.username, hashPassword(req.body.password));
+  addUserToDatabase(req.body.brukernavn, hashPassword(req.body.password));
   res.redirect('login.html');
 })  
   

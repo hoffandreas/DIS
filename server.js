@@ -2,25 +2,36 @@ const express = require('express');
 const session = require("express-session");
 const app = express();
 const path = require('path');
-const router = express.Router();
 const bodyParser = require('body-parser')
 const sqlite3 = require('sqlite3').verbose();
+const server = require("http").createServer(app);
 var crypto = require('crypto');
-
-/////////////
-/////////////
-/////////////
-///////////// Lage fetch metode her får å oppnå kravet om asynkron programmering
-/////////////
-/////////////
+const db = new sqlite3.Database('./User.sqlite3');
 
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'))
 
-// Sqlite ting
+app.use(
+    session({
+        secret: "Keep it secret",
+        name: "uniqueSessionID",
+        saveUninitialized: false,
+    })
+);
 
-const db = new sqlite3.Database('./User.sqlite3');
+
+// socket IO ting
+var io = require("socket.io")(server, {
+  /* Handling CORS: https://socket.io/docs/v3/handling-cors/ for ngrok.io */
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
+
+
+//Hashing av passord//
 
 db.serialize(() => {
   db.run('CREATE TABLE IF NOT EXISTS brukere (brukerId INTEGER PRIMARY KEY, brukernavn TEXT NOT NULL, password NOT NULL)');
@@ -65,17 +76,6 @@ const hashPassword = (password) => {
 }
 
 
-app.use(express.static(__dirname + '/public'))
-
-app.use(
-    session({
-        secret: "Keep it secret",
-        name: "uniqueSessionID",
-        saveUninitialized: false,
-    })
-);
-
-
 app.get("/", (req, res) => {
     if (req.session.loggedIn) {
         return res.redirect("main.html");
@@ -98,7 +98,6 @@ app.get("main.html", (req, res) => {
     return res.redirect("/login");
   }
 });
-
 
 
 app.post("/login", bodyParser.urlencoded(), async (req, res) => {
@@ -155,10 +154,7 @@ app.post("/signup", bodyParser.urlencoded(), async (req, res) => {
   addUserToDatabase(req.body.brukernavn, hashPassword(req.body.password));
   res.redirect('login.html');
 })  
-  
 
-//add the router
-app.use('/', router);
-app.listen(process.env.port || 3000);
+
+server.listen(process.env.port || 3000);
 console.log('Running at Port 3000');
-

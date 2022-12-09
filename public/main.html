@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+   
     <script src="server.js"></script>
+    <script src="script.js"></script>
     <link rel="shortcut icon" href="WINE1.JPEG" type="image/x-icon">
     <title>TheHoffs live auksjon</title>
     <h1 id="overskrift2">
@@ -17,7 +17,6 @@
           text-align: center;
       };
   
- 
   #brukerNavnet {
     text-emphasis: rgb(49, 13, 13);
   }
@@ -53,15 +52,22 @@ font-size: 20px;
     Du er logget inn som 
     <div id="brukerNavnet"></div>
 
-    <form action="javascript:void(0)" id="" >
+    <h2>Registrerte bud:</h2>
+    <table>
+<div id="bidContainer"></div>
+     </table>
+
+   
       <div>
         <img src="WINE1.JPEG" alt="WINE1" class="center" style="height: 350px; width: 250px; display: block; margin-left: auto; margin-right: auto" >
-    </div>
+    </div> 
+    <form action="javascript:void(0)" id="form">
     <input placeholder="Pengebud" type="number" name="message" id="message" style="display: block; margin-left: auto; margin-right: auto;">
-    <input type="submit" value="Legg inn bud" style="display: block; margin-left: auto; margin-right: auto;"></tr>
+    <input id="input" type="submit" value="Legg inn bud" style="display: block; margin-left: auto; margin-right: auto;"></tr>
   </form>
     
-    
+  <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
 </body>
 
 <script>

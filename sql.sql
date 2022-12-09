@@ -1,1 +1,1 @@
-DROP TABLE brukere
+DROP TABLE price

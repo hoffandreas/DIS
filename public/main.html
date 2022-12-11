@@ -52,10 +52,20 @@ font-size: 20px;
     Du er logget inn som 
     <div id="brukerNavnet"></div>
 
-    <h2>Registrerte bud:</h2>
-    <table>
-<div id="bidContainer"></div>
-     </table>
+        <table bgcolor="black" width="400" >
+          
+          <h2>Registrerte bud:</h2>
+<div id="bidContainer">
+          <tr bgcolor="grey" align="center">
+            <th>Brukernavn</th>
+            <th>Pengebud</th>
+          </tr>
+          <tr bgcolor=lightgrey align=center>
+          <td> bruker</td>
+          <td>bud</td>
+        </tr>
+      </div>
+        </table>
 
    
       <div>
@@ -65,6 +75,7 @@ font-size: 20px;
     <input placeholder="Pengebud" type="number" name="message" id="message" style="display: block; margin-left: auto; margin-right: auto;">
     <input id="input" type="submit" value="Legg inn bud" style="display: block; margin-left: auto; margin-right: auto;"></tr>
   </form>
+
     
   <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
   <script src="/socket.io/socket.io.js"></script>

@@ -1,1 +1,1 @@
-DROP TABLE price
+DELETE from brukere 
